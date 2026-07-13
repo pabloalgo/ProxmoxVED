@@ -4135,7 +4135,7 @@ build_container() {
   fi
 
   # Keyctl for unprivileged containers (needed for Docker)
-  if [ "$CT_TYPE" == "1" ]; then
+  if [ "$CT_TYPE" == "1" ] && [ "${ENABLE_KEYCTL:-0}" == "1" ]; then
     [ -n "$FEATURES" ] && FEATURES="$FEATURES,"
     FEATURES="${FEATURES}keyctl=1"
   fi
