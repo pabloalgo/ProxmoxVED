@@ -1,0 +1,49 @@
+{
+    "name": "OmniRoute",
+    "slug": "omniroute",
+    "categories": [
+        20
+    ],
+    "date_created": "2026-07-13",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "has_arm": false,
+    "interface_port": 20128,
+    "documentation": "https://github.com/diegosouzapw/OmniRoute/blob/main/docs/guides/USER_GUIDE.md",
+    "website": "https://omniroute.online/",
+    "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/omniroute.webp",
+    "config_path": "/opt/omniroute/.env",
+    "description": "Self-hosted AI gateway with OpenAI-compatible APIs, multi-provider routing, fallback, compression, and a management dashboard.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/omniroute.sh",
+            "resources": {
+                "cpu": 2,
+                "ram": 2048,
+                "hdd": 16,
+                "os": "Debian",
+                "version": "13"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": [
+        {
+            "text": "The generated dashboard password is stored in /opt/omniroute/.env inside the LXC.",
+            "type": "info"
+        },
+        {
+            "text": "Back up /opt/omniroute/.env with the application data. Losing STORAGE_ENCRYPTION_KEY makes stored provider credentials unreadable.",
+            "type": "warning"
+        },
+        {
+            "text": "Configure providers and create client API keys from the dashboard after installation.",
+            "type": "info"
+        }
+    ]
+}
