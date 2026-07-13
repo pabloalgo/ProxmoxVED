@@ -103,6 +103,22 @@ EOF
 
 start
 build_container
+
+if [[ "${ENABLE_KEYCTL:-0}" != "1" ]]; then
+  current_features="$(pct config "$CTID" | sed -n 's/^features: //p')"
+  if [[ "$current_features" == *"keyctl=1"* ]]; then
+    current_features="${current_features//keyctl=1/}"
+    current_features="${current_features#,}"
+    current_features="${current_features%,}"
+    current_features="${current_features//,,/,}"
+    if [[ -n "$current_features" ]]; then
+      pct set "$CTID" -features "$current_features"
+    else
+      pct set "$CTID" -delete features
+    fi
+  fi
+fi
+
 description
 
 msg_ok "Completed Successfully!\n"
