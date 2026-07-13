@@ -33,12 +33,18 @@ function wait_for_omniroute() {
   return 1
 }
 
+function installed_omniroute_version() {
+  node -p 'require("/usr/lib/node_modules/omniroute/package.json").version' 2>/dev/null
+}
+
 function rollback_update() {
   local current_version="$1"
+  local installed_version
 
   msg_warn "Update failed, rolling back to ${current_version}"
   systemctl stop omniroute 2>/dev/null || true
-  if ! ($STD timeout 600 npm install -g "omniroute@${current_version}"); then
+  installed_version="$(installed_omniroute_version || true)"
+  if [[ "$installed_version" != "$current_version" ]] && ! ($STD timeout 600 npm install -g "omniroute@${current_version}"); then
     msg_error "Package rollback failed; data backup retained at ${BACKUP_DIR}"
     exit 1
   fi
@@ -71,6 +77,13 @@ function update_script() {
   if check_for_gh_release "omniroute" "diegosouzapw/OmniRoute"; then
     current_version="$(<"$HOME/.omniroute")"
     new_version="${CHECK_UPDATE_RELEASE#v}"
+    installed_version="$(installed_omniroute_version || true)"
+
+    if [[ "$installed_version" == "$new_version" ]]; then
+      printf '%s\n' "$new_version" >"$HOME/.omniroute"
+      msg_ok "OmniRoute ${new_version} is already installed"
+      exit
+    fi
 
     msg_info "Stopping Service"
     systemctl stop omniroute
