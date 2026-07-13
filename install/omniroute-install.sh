@@ -28,7 +28,7 @@ NODE_VERSION="22" setup_nodejs
 
 omniroute_version="$(get_latest_github_release "diegosouzapw/OmniRoute")"
 msg_info "Installing OmniRoute ${omniroute_version}"
-$STD npm install -g "omniroute@${omniroute_version}"
+$STD timeout 600 npm install -g "omniroute@${omniroute_version}"
 command -v omniroute >/dev/null 2>&1 || {
   msg_error "OmniRoute binary was not installed"
   exit 1

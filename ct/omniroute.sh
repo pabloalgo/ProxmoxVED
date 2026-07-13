@@ -38,7 +38,7 @@ function rollback_update() {
 
   msg_warn "Update failed, rolling back to ${current_version}"
   systemctl stop omniroute 2>/dev/null || true
-  if ! ($STD npm install -g "omniroute@${current_version}"); then
+  if ! ($STD timeout 600 npm install -g "omniroute@${current_version}"); then
     msg_error "Package rollback failed; data backup retained at ${BACKUP_DIR}"
     exit 1
   fi
@@ -80,7 +80,7 @@ function update_script() {
     create_backup /opt/omniroute
 
     msg_info "Installing OmniRoute ${new_version}"
-    if ! ($STD npm install -g "omniroute@${new_version}"); then
+    if ! ($STD timeout 600 npm install -g "omniroute@${new_version}"); then
       rollback_update "$current_version"
     fi
     msg_ok "Installed OmniRoute ${new_version}"
