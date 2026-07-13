@@ -13,6 +13,8 @@ var_disk="${var_disk:-16}"
 var_os="${var_os:-debian}"
 var_version="${var_version:-13}"
 var_arm64="${var_arm64:-no}"
+var_nesting="${var_nesting:-0}"
+var_keyctl="${var_keyctl:-0}"
 var_unprivileged="${var_unprivileged:-1}"
 
 header_info "$APP"
